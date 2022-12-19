@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: bgresse <bgresse@student.42.fr>            +#+  +:+       +#+         #
+#    By: gresse <gresse@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/12/15 16:12:31 by zrebhi            #+#    #+#              #
-#    Updated: 2022/12/19 14:51:44 by bgresse          ###   ########.fr        #
+#    Updated: 2022/12/20 00:20:37 by gresse           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 .PHONY:		all clean fclean re
 
-SRCS		= main.c ./sources/read_file.c ./sources/draw.c
+SRCS		= ./sources/main.c ./sources/read_file.c ./sources/draw.c
 
 OBJS		= ${SRCS:.c=.o}
 

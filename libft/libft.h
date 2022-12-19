@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bgresse <bgresse@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gresse <gresse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/09 10:10:39 by bgresse           #+#    #+#             */
-/*   Updated: 2022/12/16 17:16:21 by bgresse          ###   ########.fr       */
+/*   Updated: 2022/12/20 00:29:35 by gresse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,13 +84,13 @@ int			ft_lstsize(t_list *lst);
 
 /*			get_next_line			*/
 
-char	*get_next_line(int fd);
+char		*get_next_line(int fd);
 
-char	*rest_join_buffer(char *rest, char *buffer);
-int		is_newline(char *rest, char newline);
-size_t	ftstrlen(char *string);
+char		*rest_join_buffer(char *rest, char *buffer);
+int			is_newline(char *rest, char newline);
+size_t		ftstrlen(char *string);
 
-char	*get_before_newline_character(char *rest);
-char	*get_after_newline_character(char *rest);
+char		*get_before_newline_character(char *rest);
+char		*get_after_newline_character(char *rest);
 
 #endif

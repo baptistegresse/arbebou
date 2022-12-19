@@ -3,23 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   read_file.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: bgresse <bgresse@student.42.fr>            +#+  +:+       +#+        */
+/*   By: gresse <gresse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 11:30:47 by bgresse           #+#    #+#             */
-/*   Updated: 2022/12/19 13:21:05 by bgresse          ###   ########.fr       */
+/*   Updated: 2022/12/20 00:35:23 by gresse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "./../fdf.h"
+#include "../includes/fdf.h"
 
-
-/*			recupere la taille du tableau						*/
-
-void	get_height_width(char *file_name, fdf *data)
+static void	get_height_width(char *file_name, t_fdf *data)
 {
 	int		fd;
 	char	*line;
-	
+
 	fd = open(file_name, O_RDONLY);
 	while (1)
 	{
@@ -27,20 +24,17 @@ void	get_height_width(char *file_name, fdf *data)
 		if (data->width == 0)
 			data->width = ft_wordcount(line, ' ');
 		free(line);
-		if (!line) 
+		if (!line)
 			break ;
 		data->height++;
 	}
 	close(fd);
 }
 
-
-/*				allou a la bonne taille le tableau a 2 dimesions 		*/
-
-void	allocated_matrix(fdf *data)
+static void	allocated_matrix(t_fdf *data)
 {
 	int		index;
-		
+
 	index = 0;
 	data->z_matrix = (int **)malloc(sizeof(int *) * (data->height + 1));
 	while (index <= data->height)
@@ -50,9 +44,7 @@ void	allocated_matrix(fdf *data)
 	}
 }
 
-/*				rempli une collone de valeurs		*/
-
-void	fill_matrix(int *z_line, char *line)
+static void	fill_matrix(int *z_line, char *line)
 {
 	char	**nums;
 	int		index;
@@ -68,9 +60,7 @@ void	fill_matrix(int *z_line, char *line)
 	free(nums);
 }
 
-/*				rempli le tableau a 2 dimmensions de valeurs			*/	
-
-void	browse_fill_matrix(char *file_name, fdf *data)
+static void	browse_fill_matrix(char *file_name, t_fdf *data)
 {
 	int		fd;
 	int		index;
@@ -89,9 +79,7 @@ void	browse_fill_matrix(char *file_name, fdf *data)
 	close(fd);
 }
 
-/* pars le file en entree en tab 2d de int */
-
-void	read_file(char *file_name, fdf *data)
+void	read_file(char *file_name, t_fdf *data)
 {
 	get_height_width(file_name, data);
 	allocated_matrix(data);
