@@ -1,59 +1,77 @@
-# **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: gresse <gresse@student.42.fr>              +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/12/15 16:12:31 by zrebhi            #+#    #+#              #
-#    Updated: 2022/12/20 00:20:37 by gresse           ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
+NAME		:=	fdf
 
-.PHONY:		all clean fclean re
+INC			:=	fdf.h 
+INC_DIR		:=	includes/
 
-SRCS		= ./sources/main.c ./sources/read_file.c ./sources/draw.c
+HEADERS		:= $(addprefix $(INC_DIR), $(INC))
 
-OBJS		= ${SRCS:.c=.o}
+SRC_DIR		:=	sources/
+SRC			:=	main.c draw.c read_file.c\
+				
 
-HEADERS		= ft_mlx.h \
-			  mlx_keycodes.h
+LIBFT_DIR	:=	libft/
+LIBFT_A		:=	$(LIBFT_DIR)libft.a
 
-NAME		= fdf
+OBJ_DIR		:=	build/
+OBJ			:=	$(SRC:%.c=$(OBJ_DIR)%.o)
 
-LIBFT		= libft.a
+# Compiler options
+CC			:=	cc
+CC_FLAGS	:=	-Wextra -Werror -Wall
+DEBUG_FLAG	:=	-ggdb3
 
-LIBMLX		= libmlx.a
+# define standard colors
+_END		:=	\x1b[0m
+_BOLD		:=	\x1b[1m
+_UNDER		:=	\x1b[4m
+_REV		:=	\x1b[7m
+_GREY		:=	\x1b[30m
+_RED		:=	\x1b[31m
+_GREEN		:=	\x1b[32m
+_YELLOW		:=	\x1b[33m
+_BLUE		:=	\x1b[34m
+_PURPLE		:=	\x1b[35m
+_CYAN		:=	\x1b[36m
+_WHITE		:=	\x1b[37m
 
-CC			= gcc
+MLX_DIR	=	mlx/
+MLX_A	=	$(MLX_DIR)libmlx.a
+MLX_FLAG = -lm -framework OpenGL -framework AppKit
 
-RM			= rm -f
+#########################
+# 		RULES			#
+#########################
+all: build_libft $(NAME)
 
-CFLAGS		= -Wall -Wextra -Werror #-fsanitize=address -g -O3 -march=native -ffast-math
+$(NAME): $(OBJ) $(LIBFT_A) $(MLX_A) 
+	@$(CC) $(CC_FLAGS) $(OBJ) $(LIBFT_A) $(MLX_A) $(MLX_FLAG) -o $@ 
+	@echo "> FdF Done!\n"
+	
+# Libft Makefile
+build_libft:
+	@$(MAKE) -C $(LIBFT_DIR)
 
-MLX_DIR		= mlx/
+# MinilibX makefile
+$(MLX_A): $(MLX_DIR)
+	@$(MAKE) -C $(MLX_DIR)
+	@echo "> MLX Done!\n"
 
-MLX_FLAGS	= -Lmlx -lmlx -framework OpenGL -framework AppKit
+$(OBJ): $(OBJ_DIR)%.o: $(SRC_DIR)%.c $(LIBFT_DIR) $(HEADERS) 
+	@mkdir -p $(@D)
+	@echo "$(_GREEN)compiling: $<$(_END)"
+	@$(CC) $(CC_FLAGS) -I$(INC_DIR) -I$(LIBFT_INC) -I$(MLX_DIR) -c $< -o $@
 
-MLX_CCFLAGS	= -Imlx
-
-%.o		:	%.c Makefile ${HEADERS} libft/*.h libft/*.c libft/Makefile 
-			${CC} ${CFLAGS} ${MLX_CCFLAGS} -c $< -o ${<:.c=.o}
-
-${NAME}:	${OBJS}
-			make ${LIBFT} -C libft/
-			make ${LIBMLX} -C ${MLX_DIR}
-			${CC} -o ${NAME} $(CFLAGS) ${OBJS} ${MLX_FLAGS} -lm libft/libft.a ${MLX_DIR}libmlx.a
-
-all:		${NAME}
-
+# clean commands
 clean:
-			${RM} ${OBJS}
-			make clean -C libft/
-			make clean -C ${MLX_DIR}
+	@$(MAKE) clean -C $(LIBFT_DIR)
+	@$(MAKE) clean -C $(MLX_DIR)
+	@rm -rf $(OBJ_DIR)
 
-fclean:		clean
-			${RM} ${NAME}
-			make fclean -C libft/
+fclean: clean
+	@echo "remove $(NAME)"
+	@rm -rf $(NAME)
+	@$(MAKE) fclean -C $(LIBFT_DIR)
 
-re:			fclean all
+re: fclean all
+
+.PHONY: all clean fclean re build_libft

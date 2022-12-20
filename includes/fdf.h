@@ -6,7 +6,7 @@
 /*   By: gresse <gresse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/20 00:15:59 by gresse            #+#    #+#             */
-/*   Updated: 2022/12/20 00:33:37 by gresse           ###   ########.fr       */
+/*   Updated: 2022/12/20 13:31:54 by gresse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@
 # define D_KEY 13
 # define B_KEY 11
 # define ESC_KEY 53
+# define ON_DESTROY 17
 
 typedef struct s_fdf
 {
@@ -48,7 +49,9 @@ typedef struct s_fdf
 	int		travel_r;
 	float	rotation_r;
 	float	rotation_l;
-	int		on_off;
+	int		two_dimension;
+	int		side_dimension;
+	
 
 	void	*mlx_ptr;
 	void	*win_ptr;

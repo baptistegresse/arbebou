@@ -6,14 +6,26 @@
 /*   By: gresse <gresse@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 11:31:34 by bgresse           #+#    #+#             */
-/*   Updated: 2022/12/20 00:34:33 by gresse           ###   ########.fr       */
+/*   Updated: 2022/12/20 13:42:25 by gresse           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/fdf.h"
 
+static int	closed(int keycode, t_fdf *data)
+{
+	(void)keycode;
+	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
+	return (0);
+}
+
 static int	deal_key(int keycode, t_fdf *data)
 {
+	if (keycode == 4)
+	{
+		data->rotation_l = 0.0;
+		data->rotation_r = 0.0;
+	}
 	if (keycode == ZOOM_IN_KEY)
 		data->zoom++;
 	if (keycode == ZOOM_OUT_KEY)
@@ -35,7 +47,9 @@ static int	deal_key(int keycode, t_fdf *data)
 	if (keycode == S_KEY)
 		data->rotation_l -= 0.10;
 	if (keycode == B_KEY)
-		data->on_off *= -1;
+		data->two_dimension *= -1;
+	if (keycode == ON_DESTROY)
+		mlx_hook(data->win_ptr, 2, 1L<<0, closed, data);
 	if (keycode == ESC_KEY)
 		exit(0);
 	mlx_clear_window(data->mlx_ptr, data->win_ptr);
@@ -55,7 +69,8 @@ static void	init_struct(t_fdf *data)
 	data->travel_r = 200;
 	data->rotation_l = 0.8;
 	data->rotation_r = 0.8;
-	data->on_off = 1;
+	data->two_dimension = 1;
+	data->side_dimension = 0;
 }
 
 static void	free_tab(t_fdf *data)
